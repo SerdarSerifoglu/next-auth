@@ -1,0 +1,17 @@
+.main{
+    width: 100vw;
+    height: 100vh;
+}
+.container{
+    max-width: 960px;
+    width: 960px;
+    height: 600px;
+    background-color: antiquewhite;
+}
+
+.row{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
