@@ -2,10 +2,11 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
-import { useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -46,14 +47,35 @@ function GuestHomepage() {
 }
 
 function AuthorizeUserHomepage({ session }) {
+  const handleSignOut = () => {
+    signOut();
+  };
+
   return (
     <>
       AuthorizeUser Homepage
       <h3>{session.user.name}</h3>
       <h3>{session.user.email}</h3>
       <Link href={"/login"}>
-        <button>Sign In</button>
+        <button onClick={handleSignOut}>Sign Out</button>
       </Link>
     </>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { session },
+  };
 }
