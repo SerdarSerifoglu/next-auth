@@ -35,8 +35,7 @@ const Login = () => {
               type="email"
               name="email"
               placeholder="Email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
+              {...formik.getFieldProps("email")}
             ></input>
           </div>
         </div>
@@ -47,8 +46,7 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
+              {...formik.getFieldProps("password")}
             ></input>
           </div>
         </div>
