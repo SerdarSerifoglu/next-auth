@@ -3,8 +3,20 @@ import Link from "next/link";
 import Layout from "../layout/layoutAuthentication";
 import styles from "./login.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useFormik } from "formik";
 
 const Login = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: onSubmitEvent,
+  });
+
+  async function onSubmitEvent(values) {
+    console.log(values);
+  }
   const handleGoogleSignIn = async () => {
     signIn("google", { callbackUrl: "http://localhost:3000" });
   };
@@ -15,11 +27,17 @@ const Login = () => {
       </Head>
 
       <h1>Login</h1>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={formik.handleSubmit}>
         <div className={styles.row}>
           <div className={styles["form-item"]}>
             <label>Email:</label>
-            <input type="email" name="email" placeholder="Email"></input>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+            ></input>
           </div>
         </div>
         <div className={styles.row}>
@@ -29,6 +47,8 @@ const Login = () => {
               type="password"
               name="password"
               placeholder="Password"
+              onChange={formik.handleChange}
+              value={formik.values.password}
             ></input>
           </div>
         </div>
