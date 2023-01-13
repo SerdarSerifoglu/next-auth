@@ -2,8 +2,12 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout from "../layout/layoutAuthentication";
 import styles from "./login.module.css";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Login = () => {
+  const handleGoogleSignIn = async () => {
+    signIn("google", { callbackUrl: "http://localhost:3000" });
+  };
   return (
     <Layout>
       <Head>
@@ -32,10 +36,12 @@ const Login = () => {
           <button type="submit">Login</button>
         </div>
         <div className={styles.row}>
-          <button type="submit">Sign in with Google</button>
+          <button type="button" onClick={handleGoogleSignIn}>
+            Sign in with Google
+          </button>
         </div>
         <div className={styles.row}>
-          <button type="submit">Sign in with Github</button>
+          <button type="button">Sign in with Github</button>
         </div>
         <div className={styles.row}>
           Don't have account yet? <Link href={"/register"}>Register</Link>
