@@ -4,6 +4,7 @@ import Layout from "../layout/layoutAuthentication";
 import styles from "./login.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useFormik } from "formik";
+import { loginValidation } from "../lib/validate";
 
 const Login = () => {
   const formik = useFormik({
@@ -11,6 +12,7 @@ const Login = () => {
       email: "",
       password: "",
     },
+    validate: loginValidation,
     onSubmit: onSubmitEvent,
   });
 
@@ -37,6 +39,13 @@ const Login = () => {
               placeholder="Email"
               {...formik.getFieldProps("email")}
             ></input>
+            <div className={styles["form-item-error"]}>
+              {formik.errors.email && formik.touched.email ? (
+                <span>{formik.errors.email}</span>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.row}>
@@ -48,6 +57,13 @@ const Login = () => {
               placeholder="Password"
               {...formik.getFieldProps("password")}
             ></input>
+            <div className={styles["form-item-error"]}>
+              {formik.errors.password && formik.touched.password ? (
+                <span>{formik.errors.password}</span>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.row}>
