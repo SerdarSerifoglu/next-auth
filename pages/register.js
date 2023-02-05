@@ -4,8 +4,14 @@ import Link from "next/link";
 import Layout from "../layout/layoutAuthentication";
 import styles from "./register.module.css";
 import { registerValidation } from "../lib/validate";
+import { getSession, useSession } from "next-auth/react";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 const Register = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -18,7 +24,17 @@ const Register = () => {
   });
 
   async function onSubmitEvent(values) {
-    console.log(values);
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/signup`,
+      {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      }
+    );
+    if (response.status == 201) {
+      router.push("/login");
+    }
   }
   return (
     <Layout>
@@ -109,5 +125,13 @@ const Register = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  return {
+    props: { session },
+  };
+}
 
 export default Register;
